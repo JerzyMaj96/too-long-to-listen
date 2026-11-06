@@ -1,3 +1,14 @@
 spring:
   application:
-    name: upload-service
+    name: uploadservice
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 500MB
+
+logging:
+  level:
+    root: INFO
+    com.jerzymaj.uploadservice: DEBUG
