@@ -1,4 +1,4 @@
 package com.jerzymaj.uploadservice.dto;
 
-public record UploadResult() {
+public record UploadResult(String folderId, String message) {
 }
