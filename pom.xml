@@ -18,6 +18,7 @@
 
     <modules>
         <module>upload-service</module>
+        <module>transcript-service</module>
     </modules>
 
     <properties>
