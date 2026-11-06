@@ -17,6 +17,12 @@ public class CustomResponseEntityExceptionHandler {
         return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(FiletypeNotAllowedException.class)
+    public ResponseEntity<ErrorDetails> handleFiletypeNotAllowedException(FiletypeNotAllowedException ex, WebRequest request) {
+
+        return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGlobalException(Exception ex, WebRequest request) {
 

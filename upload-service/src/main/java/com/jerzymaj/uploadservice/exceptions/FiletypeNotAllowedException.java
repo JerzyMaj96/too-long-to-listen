@@ -1,7 +1,7 @@
 package com.jerzymaj.uploadservice.exceptions;
 
-public class FileNotAllowedException extends RuntimeException {
-    public FileNotAllowedException(String message) {
+public class FiletypeNotAllowedException extends RuntimeException {
+    public FiletypeNotAllowedException(String message) {
         super(message);
     }
 }
