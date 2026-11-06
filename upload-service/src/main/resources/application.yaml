@@ -1,12 +1,15 @@
 spring:
   application:
-    name: uploadservice
+    name: upload-service
   profiles:
     active: dev
   servlet:
     multipart:
       max-file-size: 200MB
       max-request-size: 500MB
+
+app:
+  allowed-extensions: .mp3,.m4a,.wav,.aac,.ogg,.flac,.opus,.wma,.mp4,.mov,.mkv,.webm,.avi
 
 logging:
   level:
