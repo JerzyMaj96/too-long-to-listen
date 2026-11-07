@@ -28,21 +28,35 @@ public class UploadService {
             throw new FileEmptyException("File is empty");
         }
 
-        String name = file.getOriginalFilename();
-        int dotIndex = name.lastIndexOf(".");
-
-        if (dotIndex == -1) {
-            throw new FiletypeNotAllowedException("File type not allowed");
-        }
-
-        String extension = name.substring(dotIndex).toLowerCase(Locale.ROOT);
-
-        if (!allowedExtensions.contains(extension)) {
+        if (!isExtensionAllowed(file)) {
             throw new FiletypeNotAllowedException("File type not allowed");
         }
 
         String folderId = UUID.randomUUID().toString();
 
+        copyFileToUploadDir(file, folderId);
+
+        return new UploadResult(folderId, "File uploaded successfully");
+    }
+
+    private boolean isExtensionAllowed(MultipartFile file) {
+        String name = file.getOriginalFilename();
+        int dotIndex = name.lastIndexOf(".");
+
+        if (dotIndex == -1) {
+            return false;
+        }
+
+        String extension = name.substring(dotIndex).toLowerCase(Locale.ROOT);
+
+        if (!allowedExtensions.contains(extension)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void copyFileToUploadDir(MultipartFile file, String folderId) {
         try {
             Path uploadDir = UPLOAD_DIR.resolve(folderId).toAbsolutePath().normalize();
             Files.createDirectories(uploadDir);
@@ -56,7 +70,5 @@ public class UploadService {
         } catch (IOException ex) {
             throw new RuntimeException("Failed to create upload directory", ex);
         }
-
-        return new UploadResult(folderId, "File uploaded successfully");
     }
 }
