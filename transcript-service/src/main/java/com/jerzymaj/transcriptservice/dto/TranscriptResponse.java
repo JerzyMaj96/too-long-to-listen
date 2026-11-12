@@ -1,4 +1,4 @@
 package com.jerzymaj.transcriptservice.dto;
 
-public class TranscrpitResponse {
+public record TranscriptResponse(String id, String status, String text) {
 }

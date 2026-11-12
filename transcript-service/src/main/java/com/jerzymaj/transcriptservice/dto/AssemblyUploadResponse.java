@@ -1,4 +1,6 @@
 package com.jerzymaj.transcriptservice.dto;
 
-public record AssemblyUploadResponse(String uploadUrl) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record AssemblyUploadResponse(@JsonProperty("upload_url") String uploadUrl) {
 }
