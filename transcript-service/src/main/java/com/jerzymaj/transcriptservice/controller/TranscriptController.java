@@ -16,8 +16,8 @@ public class TranscriptController {
     public final TranscriptService transcriptService;
 
     @PostMapping
-    public ResponseEntity<String> processFileAudioTranscription(String folderId) {
-        transcriptService.processFileAudioTranscription(folderId);
+    public ResponseEntity<String> processFileAudioTranscription(@RequestParam String uploadPath) {
+        transcriptService.processFileAudioTranscription(uploadPath);
         return ResponseEntity.accepted().body("Request is being processed.");
     }
 
