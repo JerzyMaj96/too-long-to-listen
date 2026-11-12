@@ -18,3 +18,5 @@ buildNumber.properties
 .classpath
 
 upload-dir/
+.env
+.DS_Store
