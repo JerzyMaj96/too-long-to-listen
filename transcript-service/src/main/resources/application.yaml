@@ -3,3 +3,8 @@ spring:
     name: transcript-service
 server:
   port: 8081
+
+api:
+  assemblyai:
+    base-url: https://api.assemblyai.com/v2
+    key: ${ASSEMBLYAI_API_KEY}
