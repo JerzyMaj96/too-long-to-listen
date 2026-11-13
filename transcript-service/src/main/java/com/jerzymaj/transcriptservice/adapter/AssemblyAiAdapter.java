@@ -36,37 +36,9 @@ public class AssemblyAiAdapter implements TranscriptProvider {
 
         AssemblyGetResponse getResponse = getTranscript(transcriptResponse.id());
 
-        int maxRetries = 120;
-        int retryCount = 0;
+        Transcript transcript = handleErrorWithRetry(getResponse, transcriptResponse);
 
-        while (!"completed".equals(getResponse.status())) {
-            if ("error".equals(getResponse.status())) {
-                return Transcript.builder()
-                        .assemblyAiTranscriptId(transcriptResponse.id())
-                        .status(TranscriptStatus.FAILED)
-                        .build();
-            }
-
-            if (retryCount >= maxRetries) {
-                throw new RuntimeException("Max retries reached while waiting for transcript completion");
-            }
-
-            retryCount++;
-
-            try {
-                Thread.sleep(5000);
-                getResponse = getTranscript(transcriptResponse.id());
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException("Interrupted while waiting for transcript completion", ex);
-            }
-        }
-
-        return Transcript.builder()
-                .assemblyAiTranscriptId(transcriptResponse.id())
-                .status(TranscriptStatus.COMPLETED)
-                .text(getResponse.text())
-                .build();
+        return transcript;
     }
 
     private byte[] readUploadFile(String uploadPath) throws IOException {
@@ -95,6 +67,39 @@ public class AssemblyAiAdapter implements TranscriptProvider {
                 .uri("/transcript/{id}", transcriptId)
                 .retrieve()
                 .body(AssemblyGetResponse.class);
+    }
+
+    private Transcript handleErrorWithRetry(AssemblyGetResponse getResponse, TranscriptResponse transcriptResponse) {
+        int maxRetries = 120;
+        int retryCount = 0;
+
+        while (!"completed".equals(getResponse.status())) {
+            if ("error".equals(getResponse.status())) {
+                return Transcript.builder()
+                        .assemblyAiTranscriptId(transcriptResponse.id())
+                        .status(TranscriptStatus.FAILED)
+                        .build();
+            }
+
+            if (retryCount >= maxRetries) {
+                throw new RuntimeException("Max retries reached while waiting for transcript completion");
+            }
+
+            retryCount++;
+
+            try {
+                Thread.sleep(5000);
+                getResponse = getTranscript(transcriptResponse.id());
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted while waiting for transcript completion", ex);
+            }
+        }
+        return Transcript.builder()
+                .assemblyAiTranscriptId(transcriptResponse.id())
+                .status(TranscriptStatus.COMPLETED)
+                .text(getResponse.text())
+                .build();
     }
 
 }
