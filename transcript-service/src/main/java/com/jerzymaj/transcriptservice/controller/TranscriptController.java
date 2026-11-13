@@ -17,8 +17,11 @@ public class TranscriptController {
 
     @PostMapping
     public ResponseEntity<String> processFileAudioTranscription(@RequestParam String uploadPath) {
-        transcriptService.processFileAudioTranscription(uploadPath);
-        return ResponseEntity.accepted().body("Request is being processed.");
+        Transcript transcript = transcriptService.createTranscript();
+
+        transcriptService.processTranscriptAsync(transcript.getId(), uploadPath);
+
+        return ResponseEntity.accepted().body("Request is being processed... Transcript ID: " + transcript.getId());
     }
 
     @GetMapping("/{transcriptId}")
