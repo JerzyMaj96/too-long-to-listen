@@ -1,4 +1,4 @@
-package com.jerzymaj.transcriptservice.exeption;
+package com.jerzymaj.transcriptservice.exception;
 
 public class TranscriptNotFoundException extends RuntimeException {
     public TranscriptNotFoundException(String message) {

@@ -1,4 +1,4 @@
-package com.jerzymaj.transcriptservice.exeption;
+package com.jerzymaj.transcriptservice.exception;
 
 import java.time.LocalDateTime;
 

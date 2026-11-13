@@ -1,4 +1,4 @@
-package com.jerzymaj.transcriptservice.exeption;
+package com.jerzymaj.transcriptservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
