@@ -1,10 +1,31 @@
 spring:
   application:
     name: transcript-service
+  profiles:
+    active: dev
 server:
   port: 8081
-
 api:
   assemblyai:
     base-url: https://api.assemblyai.com/v2
     key: ${ASSEMBLYAI_API_KEY:}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  docker:
+    compose:
+      enabled: false
+  datasource:
+    url: jdbc:postgresql://localhost:5434/transcript_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
