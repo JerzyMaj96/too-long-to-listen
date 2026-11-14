@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -22,7 +20,6 @@ public class TranscriptService {
     public Transcript createTranscript() {
         Transcript transcript = Transcript.builder()
                 .status(TranscriptStatus.PROCESSING)
-                .createdAt(LocalDateTime.now())
                 .build();
 
         transcriptRepository.save(transcript);
