@@ -1,0 +1,20 @@
+services:
+  transcript-db:
+    image: postgres:16-alpine
+    container_name: transcript-db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: transcript_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - transcript_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d transcript_db" ]
+      interval: 5s
+      retries: 10
+      timeout: 5s
+
+volumes:
+  transcript_db_data:
