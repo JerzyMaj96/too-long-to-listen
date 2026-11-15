@@ -16,5 +16,11 @@ services:
       retries: 10
       timeout: 5s
 
+  kafka:
+    image: apache/kafka:4.0.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+
 volumes:
   transcript_db_data:
