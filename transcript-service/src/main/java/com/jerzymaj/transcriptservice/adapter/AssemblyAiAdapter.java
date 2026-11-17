@@ -64,7 +64,7 @@ public class AssemblyAiAdapter implements TranscriptProvider {
 
     private AssemblyGetResponse getTranscript(String transcriptId) {
         return restClient.get()
-                .uri("/transcript/{id}", transcriptId)
+                .uri("/transcript/{id}/sentences", transcriptId)
                 .retrieve()
                 .body(AssemblyGetResponse.class);
     }
