@@ -16,6 +16,9 @@ public final class TranscriptMapper {
                 .assemblyAiTranscriptId(transcript.getAssemblyAiTranscriptId())
                 .status(transcript.getStatus())
                 .text(transcript.getText())
+                .sentences(transcript.getSentences().stream()
+                        .map(SentenceMapper::toDto)
+                        .toList())
                 .createdAt(transcript.getCreatedAt())
                 .build();
     }

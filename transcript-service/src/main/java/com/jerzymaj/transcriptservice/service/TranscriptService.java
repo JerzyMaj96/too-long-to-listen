@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -34,6 +36,7 @@ public class TranscriptService {
             Transcript result = transcriptProvider.processAudioFile(uploadPath);
             transcript.setStatus(result.getStatus());
             transcript.setText(result.getText());
+            transcript.setSentences(new ArrayList<>(result.getSentences()));
             transcript.setAssemblyAiTranscriptId(result.getAssemblyAiTranscriptId());
         } catch (Exception ex) {
             log.error("Transcription failed for id: {}", transcriptId, ex);
@@ -45,9 +48,7 @@ public class TranscriptService {
 
     public Transcript getTranscriptById(Long transcriptId) {
 
-        Transcript transcript = transcriptRepository.findById(transcriptId)
+        return transcriptRepository.findById(transcriptId)
                 .orElseThrow(() -> new TranscriptNotFoundException("Transcript not found with id: " + transcriptId));
-
-        return transcript;
     }
 }
