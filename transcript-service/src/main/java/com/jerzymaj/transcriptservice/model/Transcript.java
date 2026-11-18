@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -42,4 +44,9 @@ public class Transcript {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "transcript_id", nullable = false)
+    @Builder.Default
+    private List<Sentence> sentences = new ArrayList<>();
 }
