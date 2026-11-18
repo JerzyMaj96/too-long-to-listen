@@ -2,7 +2,10 @@ package com.jerzymaj.transcriptservice.adapter;
 
 import com.jerzymaj.transcriptservice.dto.AssemblyGetResponse;
 import com.jerzymaj.transcriptservice.dto.AssemblyUploadResponse;
+import com.jerzymaj.transcriptservice.dto.SentencesResponse;
 import com.jerzymaj.transcriptservice.dto.TranscriptResponse;
+import com.jerzymaj.transcriptservice.mapper.SentenceMapper;
+import com.jerzymaj.transcriptservice.model.Sentence;
 import com.jerzymaj.transcriptservice.model.Transcript;
 import com.jerzymaj.transcriptservice.model.TranscriptStatus;
 import com.jerzymaj.transcriptservice.service.TranscriptProvider;
@@ -62,11 +65,19 @@ public class AssemblyAiAdapter implements TranscriptProvider {
                 .body(TranscriptResponse.class);
     }
 
+    // alternative
     private AssemblyGetResponse getTranscript(String transcriptId) {
+        return restClient.get()
+                .uri("/transcript/{id}", transcriptId)
+                .retrieve()
+                .body(AssemblyGetResponse.class);
+    }
+
+    private SentencesResponse getSentences(String transcriptId) {
         return restClient.get()
                 .uri("/transcript/{id}/sentences", transcriptId)
                 .retrieve()
-                .body(AssemblyGetResponse.class);
+                .body(SentencesResponse.class);
     }
 
     private Transcript handleErrorWithRetry(AssemblyGetResponse getResponse, TranscriptResponse transcriptResponse) {
@@ -95,10 +106,18 @@ public class AssemblyAiAdapter implements TranscriptProvider {
                 throw new RuntimeException("Interrupted while waiting for transcript completion", ex);
             }
         }
+
+        SentencesResponse sentencesResponse = getSentences(transcriptResponse.id());
+
+        List<Sentence> sentences = sentencesResponse.sentences().stream()
+                .map(SentenceMapper::toEntity)
+                .toList();
+
         return Transcript.builder()
                 .assemblyAiTranscriptId(transcriptResponse.id())
                 .status(TranscriptStatus.COMPLETED)
                 .text(getResponse.text())
+                .sentences(sentences)
                 .build();
     }
 

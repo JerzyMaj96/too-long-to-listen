@@ -1,4 +1,14 @@
 package com.jerzymaj.transcriptservice.dto;
 
-public record SentencesResponse() {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record SentencesResponse(String id,
+        List<Sentence> sentences) {
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record Sentence(String text, int start, int end) {
+    }
 }
