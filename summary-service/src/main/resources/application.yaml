@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: summary-service
+  profiles:
+    active: dev
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:}
+logging:
+  level:
+    root: INFO
+    com.jerzymaj.summaryservice: DEBUG
+server:
+  port: 8082

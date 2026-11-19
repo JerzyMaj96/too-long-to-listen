@@ -19,6 +19,7 @@
     <modules>
         <module>upload-service</module>
         <module>transcript-service</module>
+        <module>summary-service</module>
     </modules>
 
     <properties>
