@@ -9,6 +9,9 @@ api:
   assemblyai:
     base-url: https://api.assemblyai.com/v2
     key: ${ASSEMBLYAI_API_KEY:}
+app:
+  kafka:
+    topic: "transcript-completed"
 
 ---
 spring:

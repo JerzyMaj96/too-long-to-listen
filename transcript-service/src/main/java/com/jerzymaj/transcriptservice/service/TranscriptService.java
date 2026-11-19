@@ -1,6 +1,9 @@
 package com.jerzymaj.transcriptservice.service;
 
+import com.jerzymaj.transcriptservice.event.TranscriptCompletedEvent;
 import com.jerzymaj.transcriptservice.exception.TranscriptNotFoundException;
+import com.jerzymaj.transcriptservice.kafka.TranscriptEventProducer;
+import com.jerzymaj.transcriptservice.mapper.TranscriptMapper;
 import com.jerzymaj.transcriptservice.model.Transcript;
 import com.jerzymaj.transcriptservice.model.TranscriptStatus;
 import com.jerzymaj.transcriptservice.repo.TranscriptRepository;
@@ -18,6 +21,7 @@ public class TranscriptService {
 
     public final TranscriptRepository transcriptRepository;
     public final TranscriptProvider transcriptProvider;
+    public final TranscriptEventProducer producer;
 
     public Transcript createTranscript() {
         Transcript transcript = Transcript.builder()
@@ -44,6 +48,11 @@ public class TranscriptService {
         }
 
         transcriptRepository.save(transcript);
+
+        if (transcript.getStatus() == TranscriptStatus.COMPLETED) {
+            TranscriptCompletedEvent event = TranscriptMapper.toEvent(transcript);
+            producer.send(event);
+        }
     }
 
     public Transcript getTranscriptById(Long transcriptId) {

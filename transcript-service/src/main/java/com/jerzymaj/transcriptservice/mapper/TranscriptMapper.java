@@ -1,6 +1,7 @@
 package com.jerzymaj.transcriptservice.mapper;
 
 import com.jerzymaj.transcriptservice.dto.TranscriptResult;
+import com.jerzymaj.transcriptservice.event.TranscriptCompletedEvent;
 import com.jerzymaj.transcriptservice.model.Transcript;
 
 public final class TranscriptMapper {
@@ -20,6 +21,17 @@ public final class TranscriptMapper {
                         .map(SentenceMapper::toDto)
                         .toList())
                 .createdAt(transcript.getCreatedAt())
+                .build();
+    }
+
+    public static TranscriptCompletedEvent toEvent(Transcript transcript) {
+
+        return TranscriptCompletedEvent.builder()
+                .transcriptUuid(transcript.getUuid())
+                .text(transcript.getText())
+                .sentences(transcript.getSentences().stream()
+                        .map(SentenceMapper::toDto)
+                        .toList())
                 .build();
     }
 }
