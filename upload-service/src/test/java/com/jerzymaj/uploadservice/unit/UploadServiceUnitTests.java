@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -17,7 +16,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class UploadServiceUnitTests {
@@ -35,14 +33,14 @@ public class UploadServiceUnitTests {
     }
 
     @Test
-    void shouldThrow_WhenFileIsEmpty() {
+    public void shouldThrow_WhenFileIsEmpty() {
         MockMultipartFile file = new MockMultipartFile("file", "test.mp3", "audio/mpeg", new byte[0]);
 
         assertThrows(FileEmptyException.class, () -> uploadService.uploadFile(file));
     }
 
     @Test
-    void shouldSaveFile_WhenFileIsValid() {
+    public void shouldSaveFile_WhenFileIsValid() {
         MockMultipartFile file = new MockMultipartFile("file", "test.mp3", "audio/mpeg", "audio".getBytes());
 
         UploadResult result = uploadService.uploadFile(file);
