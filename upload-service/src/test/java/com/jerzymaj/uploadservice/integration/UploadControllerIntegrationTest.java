@@ -1,12 +1,17 @@
 package com.jerzymaj.uploadservice.integration;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.nio.file.Path;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -19,6 +24,14 @@ public class UploadControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @TempDir
+    static Path tempDir;
+
+    @DynamicPropertySource
+    static void overrideUploadDir(DynamicPropertyRegistry registry) {
+        registry.add("storage.upload-dir", () -> tempDir.toString());
+    }
 
     @Test
     public void testUploadFile() throws Exception {
