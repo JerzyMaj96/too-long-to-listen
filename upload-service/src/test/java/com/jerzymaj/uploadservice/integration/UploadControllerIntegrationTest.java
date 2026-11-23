@@ -22,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class UploadControllerIntegrationTest {
 
+    private static final String url = "/too-long-to-listen/api/v1/upload";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -38,7 +40,7 @@ public class UploadControllerIntegrationTest {
 
         MockMultipartFile file = new MockMultipartFile("file", "test.mp3", "audio/mpeg", "audio".getBytes());
 
-        mockMvc.perform(multipart("/too-long-to-listen/api/v1/upload")
+        mockMvc.perform(multipart(url)
                         .file(file))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("File uploaded successfully"));

@@ -55,9 +55,9 @@ public class TranscriptServiceUnitTests {
                 .id(1L)
                 .status(TranscriptStatus.COMPLETED)
                 .assemblyAiTranscriptId("aai-123")
-                .text("Cześć, to jest test. Drugie zdanie.")
+                .text("Hi, this is test. Second sentence.")
                 .sentences(List.of(
-                        Sentence.builder().text("Cześć, to jest test.").startMs(0).endMs(1500).build(),
+                        Sentence.builder().text("Hi, this is test. Second sentence").startMs(0).endMs(1500).build(),
                         Sentence.builder().text("Drugie zdanie.").startMs(1600).endMs(2800).build()
                 ))
                 .build();
