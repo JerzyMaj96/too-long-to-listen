@@ -3,15 +3,32 @@ services:
     image: postgres:16-alpine
     container_name: transcript-db
     environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME_TRANS}
+      POSTGRES_PASSWORD: ${DB_PASSWORD_TRANS}
       POSTGRES_DB: transcript_db
     ports:
       - "5434:5432"
     volumes:
       - transcript_db_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d transcript_db" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME_TRANS} -d transcript_db" ]
+      interval: 5s
+      retries: 10
+      timeout: 5s
+
+  summary-db:
+    image: postgres:16-alpine
+    container_name: summary-db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME_SUM}
+      POSTGRES_PASSWORD: ${DB_PASSWORD_SUM}
+      POSTGRES_DB: summary_db
+    ports:
+      - "5435:5432"
+    volumes:
+      - summary_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME_SUM} -d summary_db" ]
       interval: 5s
       retries: 10
       timeout: 5s
@@ -24,3 +41,4 @@ services:
 
 volumes:
   transcript_db_data:
+  summary_db_data:
